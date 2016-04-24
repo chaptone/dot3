@@ -1,4 +1,5 @@
 var GameLayer = cc.LayerColor.extend({
+  ball:[],
   init: function() {
     this._super( new cc.Color( 0, 0, 0, 255 ) );
     this.setPosition( new cc.Point( 0, 0 ) );
@@ -14,18 +15,10 @@ var GameLayer = cc.LayerColor.extend({
     this.addChild( this.dot );
     this.dot.scheduleUpdate();
 
-    // this.whitedot = new Whitedot();
-    // this.dot.setPosition( new cc.Point( 400, 300 ) );
-    // this.addChild( this.whitedot );
-    // this.whitedot.scheduleUpdate();
+    
 
-    // this.test();
 
-    // this.gold = new Gold();
-    // this.addChild( this.gold );
-    // // this.gold.setPosition(new cc.Point(400, 400));
-    // this.gold.randomPosition();
-    // this.scheduleUpdate();
+    this.setBall();
 
     return true;
   },
@@ -57,6 +50,26 @@ var GameLayer = cc.LayerColor.extend({
         self.onKeyUp( keyCode, event );
       }
     }, this);
+  },
+  setX: function() {
+    var coordX = Math.random()*5;
+    return coordX;
+  },
+  setY: function() {
+    var coordY = Math.random()*5;
+    return coordY;
+  },
+  setBall: function(){
+    for(var i = 0 ; i < 3 ; i++){
+      this.ball[i] = new Whitedot();
+      this.ball[i].vx = this.setX();
+      this.ball[i].vy = this.setY();
+      this.addChild(this.ball[i]);
+      this.ball[i].scheduleUpdate();
+
+    }
+    console.log("vx = "+ this.setX());
+    console.log("vy = "+ this.setY());
   },
   // update : function (){
   //   var n = 3;
@@ -97,14 +110,13 @@ var GameLayer = cc.LayerColor.extend({
   //     x--;
   //   }
   // },
-  // update: function() {
-  //
-  //   if ( this.gold.closeTo( this.ship ) ) {
-  //     var score = 0;
-  //     this.scoreLabel.setString( score+1 );
-  //     this.gold.randomPosition();
-  //   }
-  // },
+  update: function() {
+
+    if ( this.whitedot.closeTo( this.dot ) ) {
+      var score = 0;
+      this.scoreLabel.setString( score+1 );
+    }
+  },
 });
 
 var StartScene = cc.Scene.extend({
