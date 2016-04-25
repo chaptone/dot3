@@ -16,5 +16,6 @@
         "src/GameLayer.js",
         "src/Dot.js",
         "src/Whitedot.js"
+        
     ]
 }

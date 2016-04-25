@@ -1,29 +1,30 @@
 var Dot = cc.Sprite.extend({
   ctor: function() {
     this._super();
-    this.initWithFile( 'res/images/dot.png' );
+    this.initWithFile( 'res/images/ball.png' );
     this.direction = null;
+    this.setColor(cc.color(255,255,255));
   },
   update: function( dt ) {
     var pos = this.getPosition();
     var screenWidth = 800;
     var screenHeight = 600;
     if(this.direction == Dot.DIR.UP){
-      if ( pos.y < screenHeight ) {
+      if ( pos.y <= screenHeight ) {
         this.setPosition( new cc.Point( pos.x, pos.y+10 ) );
       } else {
         this.setPosition( new cc.Point( pos.x, 0 ) );
       }
     }
     if ( this.direction == Dot.DIR.RIGHT ) {
-      if ( pos.x < screenWidth ) {
+      if ( pos.x <= screenWidth ) {
         this.setPosition( new cc.Point( pos.x+10, pos.y ) );
       } else {
         this.setPosition( new cc.Point( 0, pos.y ) );
       }
     }
     if ( this.direction == Dot.DIR.LEFT ) {
-      if ( pos.x < screenWidth ) {
+      if ( pos.x <= screenWidth ) {
         this.setPosition( new cc.Point( pos.x-10, pos.y ) );
       }
       if(pos.x<0){
@@ -31,7 +32,7 @@ var Dot = cc.Sprite.extend({
       }
     }
     if ( this.direction == Dot.DIR.DOWN ) {
-      if ( pos.y < screenWidth ) {
+      if ( pos.y <= screenWidth ) {
         this.setPosition( new cc.Point( pos.x, pos.y-10 ) );
       }
       if(pos.y<0){

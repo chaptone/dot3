@@ -15,8 +15,12 @@ var GameLayer = cc.LayerColor.extend({
     this.addChild( this.dot );
     this.dot.scheduleUpdate();
 
-    
+    // cc.audioEngine.playMusic(res.Main_Music,false);
 
+
+    this.score = 0;
+    this.min = 3;
+    this.countBall = 3;
 
     this.setBall();
 
@@ -37,7 +41,6 @@ var GameLayer = cc.LayerColor.extend({
     }
   },
   onKeyUp: function( keyCode, event ) {
-    console.log( 'Up: ' + keyCode.toString() );
   },
   addKeyboardHandlers: function() {
     var self = this;
@@ -52,73 +55,46 @@ var GameLayer = cc.LayerColor.extend({
     }, this);
   },
   setX: function() {
-    var coordX = Math.random()*5;
+    var min = this.min;
+    var max = min;
+    var coordX = Math.random()*(max-min)+min;
     return coordX;
   },
   setY: function() {
-    var coordY = Math.random()*5;
+    var min = this.min;
+    var max = this.min+3;
+    var coordY = Math.random()*(max-min)+min;
     return coordY;
   },
   setBall: function(){
+    var temp = Math.ceil(Math.random()*4);
     for(var i = 0 ; i < 3 ; i++){
       this.ball[i] = new Whitedot();
       this.ball[i].vx = this.setX();
       this.ball[i].vy = this.setY();
       this.addChild(this.ball[i]);
       this.ball[i].scheduleUpdate();
-
     }
-    console.log("vx = "+ this.setX());
-    console.log("vy = "+ this.setY());
+    return temp;
   },
-  // update : function (){
-  //   var n = 3;
-  //   var dotpos = new Array(2);
-  //   var v = 1;
-  //
-  //   for(var i=0;i<n;i++){
-  //     dotpos[i] = new Array(n);
-  //   }
-  //
-  //   for(var i=0;i<n;i++){
-  //     dotpos[0][i] = 400;
-  //     dotpos[1][i] = 300;
-  //   }
-  //
-  //   for(var i=0;i<2;i++){
-  //     for(var j=0;j<n;j++){
-  //       console.log(dotpos[i][j]);
-  //     }
-  //   }
-  //   var x = 100;
-  //   while(x>0){
-  //     for(var i=0;i<n;i++){
-  //       if(Math.abs(dotpos[0][i] + v) > 600) v = v*(-1);
-  //       if(Math.abs(dotpos[1][i] + v) > 600) v = v*(-1);
-  //
-  //     }
-  //
-  //     for(var i=0;i<n;i++){
-  //       dotpos[0][i] = dotpos[0][i] + v;
-  //       dotpos[1][i] = dotpos[1][i] + v;
-  //       console.log(dotpos[0][i]);
-  //     }
-  //
-  //     for(var i=0;i<n;i++){
-  //       this.whitedot.setPosition( new cc.Point( dotpos[0][i] , dotpos[1][i] ) );
-  //     }
-  //     x--;
-  //   }
-  // },
-  update: function() {
-
-    if ( this.whitedot.closeTo( this.dot ) ) {
-      var score = 0;
-      this.scoreLabel.setString( score+1 );
+  update: function( dt ) {
+    for(var i = 0 ; i < 3 ; i ++){
+      if ( this.ball[i].closeTo( this.dot ) ) {
+        cc.audioEngine.playEffect(res.Pickup_sound,false);
+        this.score+=this.min;
+        this.scoreLabel.setString( this.score + "" );
+        this.removeChild( this.ball[i] );
+        this.countBall--;
+        this.ball[i].setPosition( new cc.Point(-30,-30));
+        if(this.countBall == 0){
+          this.countBall = 3;
+          this.setBall();
+          this.min+=1;
+         }
+      }
     }
   },
 });
-
 var StartScene = cc.Scene.extend({
   onEnter: function() {
     this._super();

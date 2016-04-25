@@ -1,10 +1,21 @@
 var Whitedot = cc.Sprite.extend({
   ctor: function() {
     this._super();
-    this.initWithFile( 'res/images/otherdot.png' );
-    this.setPosition( new cc.Point( 400, 300 ) );
+    this.initWithFile( 'res/images/white_dot.png' );
+    this.setPosition( new cc.Point( 500, 500 ) );
+
+    var sprite_action = cc.TintBy.create(0.5,-255,-127,-190);
+    var repeat_action = cc.Repeat.create(sprite_action,100);
+    this.runAction(repeat_action);
+
+
     this.vx = 5;
     this.vy = 5;
+    this.temp = Math.random()*4;
+    if(this.temp < 1) this.setPosition(new cc.Point( 0, 0));
+    else if(this.temp < 2) this.setPosition(new cc.Point( 0, 580));
+    else if(this.temp < 3) this.setPosition(new cc.Point( 780, 580));
+    else this.setPosition(new cc.Point( 780, 0));
   },
   moveX: function(){
     var pos = this.getPosition();
